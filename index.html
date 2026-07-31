@@ -13,14 +13,12 @@
       height: 100%;
       background-color: #eee;
       overflow: hidden;
-      font-family: Arial, sans-serif;
     }
 
     .iframe-container {
       width: 100%;
       height: 100dvh;
       overflow: hidden;
-      position: relative;
     }
 
     iframe {
@@ -29,51 +27,12 @@
       height: 100%;
       border: none;
     }
-
-    /* Tombol darurat/fallback jika iframe diblokir total oleh browser HP */
-    #fallback-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #eee;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-      box-sizing: border-box;
-      z-index: 10;
-      display: none; /* Sembunyikan secara default */
-    }
-
-    .btn-switch {
-      margin-top: 15px;
-      padding: 12px 24px;
-      background-color: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
   <div class="iframe-container">
-    <!-- Tombol Fallback jika terjadi kendala pada iframe -->
-    <div id="fallback-overlay">
-      <h3>Aplikasi memerlukan izin atau menggunakan Akun Organisasi/Workspace</h3>
-      <p>Jika aplikasi gagal dimuat atau menampilkan layar error Google Drive, silakan klik tombol di bawah untuk beralih ke link akses alternatif:</p>
-      <button class="btn-switch" onclick="switchToWorkspaceLink()">Buka dengan Link Alternatif</button>
-    </div>
-
     <iframe
       id="app"
-      src=""
       scrolling="yes"
       allowfullscreen="true"
       webkitallowfullscreen="true"
@@ -83,37 +42,19 @@
   </div>
 
   <script>
-    // Definisikan kedua link
     const primaryUrl = "https://script.google.com/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
     const workspaceUrl = "https://script.google.com/a/~/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
 
     const iframe = document.getElementById('app');
-    const fallbackOverlay = document.getElementById('fallback-overlay');
 
-    // Cek apakah perangkat sebelumnya pernah dialihkan atau simpan preferensi di localStorage
-    let activeUrl = primaryUrl;
+    // Mengecek apakah perangkat ini sebelumnya sudah diset untuk memakai link alternatif
+    const useAlternative = localStorage.getItem('d_saku_use_alt');
 
-    // Jika user menggunakan domain Google Workspace organisasi (misal email sekolah/kantor), 
-    // atau jika link utama bermasalah, kita sediakan mekanisme pengecekan.
-    // Untuk amannya, kita load primary dulu.
-    iframe.src = primaryUrl;
-
-    // Fungsi untuk beralih secara manual / otomatis ke link Workspace
-    function switchToWorkspaceLink() {
+    if (useAlternative === 'true') {
       iframe.src = workspaceUrl;
-      fallbackOverlay.style.display = 'none'; // Sembunyikan pesan setelah diklik
+    } else {
+      iframe.src = primaryUrl;
     }
-
-    // Karena batasan keamanan browser (CORS) mencegah script mendeteksi isi iframe yang error,
-    // kita berikan opsi interaktif yang muncul jika pengguna mendapati layar putih/error Google Drive,
-    // atau kita bisa buat tombol kecil bantuan di pojok jika diperlukan.
-    
-    // (Opsional) Menampilkan tombol opsi jika iframe lama dimuat atau untuk jaga-jaga ditaruh timer 
-    // Jika dalam 5 detik user merasa halaman tidak muncul, mereka bisa klik tombol alternatif.
-    setTimeout(() => {
-      // Menampilkan opsi tombol pengalihan sebagai antisipasi jika di HP tersebut error
-      fallbackOverlay.style.display = 'flex';
-    }, 4000); // Munculkan opsi setelah 4 detik sebagai pengaman
   </script>
 </body>
 </html>
