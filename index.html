@@ -64,11 +64,13 @@
 
     .app-subtitle {
       color: #94a3b8;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-size: 10px; /* Ukuran teks diperkecil */
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: none; /* Dibuat normal agar kalimat doa/ucapan lebih nyaman dibaca */
       margin: 0 0 24px 0;
+      text-align: center;
+      padding: 0 20px;
     }
 
     .loading-bar {
@@ -104,14 +106,14 @@
 </head>
 <body>
 
-  <!-- Splash Screen dengan Sapaan Waktu Otomatis -->
+  <!-- Splash Screen dengan Sapaan & Label Kondisional Berdasarkan Waktu -->
   <div id="loader">
     <div class="logo-container">
       <div class="glow-effect"></div>
       <img src="https://i.ibb.co.com/vCd6bGZX/logo.png" alt="Logo" class="app-logo" />
     </div>
     <h1 class="app-title" id="greeting-text">Memuat...</h1>
-    <p class="app-subtitle">SEMOGA HARIMU PENUH INSPIRASI</p>
+    <p class="app-subtitle" id="subtitle-text">Menyiapkan Ruang Kerja...</p>
     <div class="loading-bar"></div>
   </div>
 
@@ -123,19 +125,24 @@
   </iframe>
 
   <script>
-    // --- SKRIP OTOMATIS MENENTUKAN UCAPAN BERDASARKAN WAKTU ---
+    // --- SKRIP OTOMATIS MENENTUKAN UCAPAN & PESAN BERDASARKAN WAKTU ---
     const hours = new Date().getHours();
     let greeting = "Selamat Malam";
+    let subMessage = "Selamat beristirahat dan Esok membawa harapan";
     
     if (hours >= 4 && hours < 11) {
       greeting = "Selamat Pagi";
+      subMessage = "Bissmillah, Semoga hari ini penuh berkah";
     } else if (hours >= 11 && hours < 15) {
       greeting = "Selamat Siang";
+      subMessage = "Semoga langkah hari ini selalu dimudahkan";
     } else if (hours >= 15 && hours < 18) {
       greeting = "Selamat Sore";
+      subMessage = "Semoga lelah hari ini menjadi berkah";
     }
 
-    document.getElementById('greeting-text').innerText = greeting + "";
+    document.getElementById('greeting-text').innerText = greeting;
+    document.getElementById('subtitle-text').innerText = subMessage;
 
     // --- INISIALISASI APLIKASI ---
     const primaryUrl = "https://script.google.com/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
@@ -147,7 +154,7 @@
     const useAlternative = localStorage.getItem('d_saku_use_alt');
     iframe.src = useAlternative === 'true' ? workspaceUrl : primaryUrl;
 
-    // Timer loader pembuka (durasi bisa disesuaikan, saat ini diset 3.5 detik)
+    // Timer loader pembuka
     window.addEventListener('load', () => {
       setTimeout(() => {
         loader.style.opacity = '0';
