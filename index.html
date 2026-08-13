@@ -127,18 +127,20 @@
     const iframe = document.getElementById('app');
     const loader = document.getElementById('loader');
 
-    iframe.onload = function() {
-      // Berikan waktu tunda (misalnya 2500ms / 2.5 detik) agar Babel & React 
-      // di dalam iframe selesai merender form login sepenuhnya sebelum loader ditutup.
+    // Set sumber iframe terlebih dahulu
+    const useAlternative = localStorage.getItem('d_saku_use_alt');
+    iframe.src = useAlternative === 'true' ? workspaceUrl : primaryUrl;
+
+    // Gunakan Timer pasti (misal 3500ms / 3.5 detik) untuk menjamin 
+    // form login di dalam iframe sudah selesai dirender sepenuhnya sebelum loader ditutup.
+    window.addEventListener('load', () => {
       setTimeout(() => {
         loader.style.opacity = '0';
         setTimeout(() => {
           loader.style.display = 'none';
         }, 600);
-      }, 1500); 
-    };
-
-    iframe.src = localStorage.getItem('d_saku_use_alt') === 'true' ? workspaceUrl : primaryUrl;
+      }, 3500); 
+    });
   </script>
 </body>
 </html>
