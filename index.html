@@ -4,95 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>D-SAKU GURU</title>
-  <link rel="icon" href="https://i.ibb.co.com/vCd6bGZX/logo.png" />
+  <!-- CSS Langsung di HEAD untuk menghindari kedipan putih -->
   <style>
-    /* Ubah background ke warna gelap yang senada dengan form login Anda */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #1e1b4b; /* Warna latar gelap senada tema login */
-      overflow: hidden;
+    body, html {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      background-color: #1e1b4b; /* WARNA GELAP SENADA DENGAN LOGIN */
     }
-
-    .iframe-container {
-      width: 100%;
-      height: 100dvh;
-      overflow: hidden;
-      position: relative;
+    #loader {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: #1e1b4b; display: flex; align-items: center; justify-content: center;
+      color: white; font-family: sans-serif; z-index: 9999;
     }
-
-    iframe {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: transparent;
-    }
-
-    /* Splash Screen Overlay */
-    #splash {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #1e1b4b; /* Sesuaikan dengan warna background aplikasi Anda */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      transition: opacity 0.5s ease;
-    }
-
-    .loader {
-      width: 50px;
-      height: 50px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #3b82f6;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    iframe { width: 100%; height: 100%; border: none; }
   </style>
 </head>
 <body>
-  <div class="iframe-container">
-    <!-- Splash Screen -->
-    <div id="splash">
-      <div class="loader"></div>
-      <p style="color: white; margin-top: 20px; font-family: sans-serif;">Memuat Aplikasi...</p>
-    </div>
 
-    <iframe
-      id="app"
-      scrolling="yes"
-      allowfullscreen="true"
-      webkitallowfullscreen="true"
-      mozallowfullscreen="true"
-      allow="fullscreen; camera; microphone; display-capture; geolocation;"
-      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">
-    </iframe>
-  </div>
+  <!-- Loader instan -->
+  <div id="loader">Memuat D'Saku Guru...</div>
+
+  <iframe
+    id="app"
+    allowfullscreen="true"
+    allow="fullscreen; camera; microphone; display-capture; geolocation;"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">
+  </iframe>
 
   <script>
     const primaryUrl = "https://script.google.com/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
     const workspaceUrl = "https://script.google.com/a/~/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
 
     const iframe = document.getElementById('app');
-    const splash = document.getElementById('splash');
+    const loader = document.getElementById('loader');
 
-    // Menghilangkan splash screen saat iframe selesai memuat
-    iframe.onload = () => {
-      splash.style.opacity = '0';
-      setTimeout(() => splash.style.display = 'none', 500);
+    // Sembunyikan loader setelah iframe benar-benar termuat
+    iframe.onload = function() {
+      loader.style.display = 'none';
     };
 
-    const useAlternative = localStorage.getItem('d_saku_use_alt');
-    iframe.src = useAlternative === 'true' ? workspaceUrl : primaryUrl;
+    iframe.src = localStorage.getItem('d_saku_use_alt') === 'true' ? workspaceUrl : primaryUrl;
   </script>
 </body>
 </html>
