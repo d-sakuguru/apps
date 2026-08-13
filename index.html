@@ -54,10 +54,12 @@
 
     .app-title {
       color: #ffffff;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 800;
       letter-spacing: 0.5px;
       margin: 0 0 8px 0;
+      text-align: center;
+      padding: 0 20px;
     }
 
     .app-subtitle {
@@ -102,14 +104,14 @@
 </head>
 <body>
 
-  <!-- Splash Screen dengan Ucapan Waktu Dinamis -->
+  <!-- Splash Screen dengan Sapaan Waktu Otomatis -->
   <div id="loader">
     <div class="logo-container">
       <div class="glow-effect"></div>
       <img src="https://i.ibb.co.com/vCd6bGZX/logo.png" alt="Logo" class="app-logo" />
     </div>
-    <h1 class="app-title">D'Saku Guru</h1>
-    <p id="greeting-text" class="app-subtitle">Memuat Aplikasi...</p>
+    <h1 class="app-title" id="greeting-text">Memuat...</h1>
+    <p class="app-subtitle">SEMOGA HARIMU PENUH INSPIRASI</p>
     <div class="loading-bar"></div>
   </div>
 
@@ -121,31 +123,31 @@
   </iframe>
 
   <script>
-    // --- SKRIP UCAPAN BERDASARKAN WAKTU ---
+    // --- SKRIP OTOMATIS MENENTUKAN UCAPAN BERDASARKAN WAKTU ---
     const hours = new Date().getHours();
-    const greetingElement = document.getElementById('greeting-text');
+    let greeting = "Selamat Malam";
     
-    if (hours >= 3 && hours < 11) {
-      greetingElement.innerText = "SELAMAT PAGI, SAHABAT BELAJAR";
+    if (hours >= 4 && hours < 11) {
+      greeting = "Selamat Pagi";
     } else if (hours >= 11 && hours < 15) {
-      greetingElement.innerText = "SELAMAT SIANG, SAHABAT BELAJAR";
+      greeting = "Selamat Siang";
     } else if (hours >= 15 && hours < 18) {
-      greetingElement.innerText = "SELAMAT SORE, SAHABAT BELAJAR";
-    } else {
-      greetingElement.innerText = "SELAMAT MALAM, SAHABAT BELAJAR";
+      greeting = "Selamat Sore";
     }
 
+    document.getElementById('greeting-text').innerText = greeting + ", Guru Hebat!";
+
+    // --- INISIALISASI APLIKASI ---
     const primaryUrl = "https://script.google.com/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
     const workspaceUrl = "https://script.google.com/a/~/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
 
     const iframe = document.getElementById('app');
     const loader = document.getElementById('loader');
 
-    // Set sumber iframe
     const useAlternative = localStorage.getItem('d_saku_use_alt');
     iframe.src = useAlternative === 'true' ? workspaceUrl : primaryUrl;
 
-    // Timer penutup loader
+    // Timer loader pembuka (durasi bisa disesuaikan, saat ini diset 3.5 detik)
     window.addEventListener('load', () => {
       setTimeout(() => {
         loader.style.opacity = '0';
