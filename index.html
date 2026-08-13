@@ -6,12 +6,13 @@
   <title>D-SAKU GURU</title>
   <link rel="icon" href="https://i.ibb.co.com/vCd6bGZX/logo.png" />
   <style>
+    /* Ubah background ke warna gelap yang senada dengan form login Anda */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background-color: #eee;
+      background-color: #1e1b4b; /* Warna latar gelap senada tema login */
       overflow: hidden;
     }
 
@@ -19,6 +20,7 @@
       width: 100%;
       height: 100dvh;
       overflow: hidden;
+      position: relative;
     }
 
     iframe {
@@ -26,11 +28,45 @@
       width: 100%;
       height: 100%;
       border: none;
+      background: transparent;
     }
+
+    /* Splash Screen Overlay */
+    #splash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #1e1b4b; /* Sesuaikan dengan warna background aplikasi Anda */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: opacity 0.5s ease;
+    }
+
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <div class="iframe-container">
+    <!-- Splash Screen -->
+    <div id="splash">
+      <div class="loader"></div>
+      <p style="color: white; margin-top: 20px; font-family: sans-serif;">Memuat Aplikasi...</p>
+    </div>
+
     <iframe
       id="app"
       scrolling="yes"
@@ -47,15 +83,16 @@
     const workspaceUrl = "https://script.google.com/a/~/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
 
     const iframe = document.getElementById('app');
+    const splash = document.getElementById('splash');
 
-    // Mengecek apakah perangkat ini sebelumnya sudah diset untuk memakai link alternatif
+    // Menghilangkan splash screen saat iframe selesai memuat
+    iframe.onload = () => {
+      splash.style.opacity = '0';
+      setTimeout(() => splash.style.display = 'none', 500);
+    };
+
     const useAlternative = localStorage.getItem('d_saku_use_alt');
-
-    if (useAlternative === 'true') {
-      iframe.src = workspaceUrl;
-    } else {
-      iframe.src = primaryUrl;
-    }
+    iframe.src = useAlternative === 'true' ? workspaceUrl : primaryUrl;
   </script>
 </body>
 </html>
