@@ -28,7 +28,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 20px;
+      /* Jarak bawah diperbesar sedikit agar teks turun dan tidak menutupi efek */
+      margin-bottom: 36px; 
     }
 
     .glow-effect {
@@ -64,10 +65,10 @@
 
     .app-subtitle {
       color: #94a3b8;
-      font-size: 10px; /* Ukuran teks diperkecil */
+      font-size: 10px;
       font-weight: 600;
       letter-spacing: 1px;
-      text-transform: none; /* Dibuat normal agar kalimat doa/ucapan lebih nyaman dibaca */
+      text-transform: none;
       margin: 0 0 24px 0;
       text-align: center;
       padding: 0 20px;
@@ -128,7 +129,7 @@
     // --- SKRIP OTOMATIS MENENTUKAN UCAPAN & PESAN BERDASARKAN WAKTU ---
     const hours = new Date().getHours();
     let greeting = "Selamat Malam";
-    let subMessage = "Alhamdulillah, Semoga Doa dan Harapan menemukan jalannya";
+    let subMessage = "Alhamdulillah, rehat sejenak Semoga esok lebih baik";
     
     if (hours >= 4 && hours < 11) {
       greeting = "Selamat Pagi";
