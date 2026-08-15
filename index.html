@@ -128,17 +128,17 @@
     // --- SKRIP OTOMATIS MENENTUKAN UCAPAN & PESAN BERDASARKAN WAKTU ---
     const hours = new Date().getHours();
     let greeting = "Selamat Malam";
-    let subMessage = "Semoga Doa dan Harapan menemukan jalannya";
+    let subMessage = "Alhamdulillah, Semoga Doa dan Harapan menemukan jalannya";
     
     if (hours >= 4 && hours < 11) {
       greeting = "Selamat Pagi";
-      subMessage = "Bissmillah, Semoga hari ini penuh berkah";
+      subMessage = "Bissmillah, Semoga hari ini penuh keberkahan";
     } else if (hours >= 11 && hours < 15) {
       greeting = "Selamat Siang";
       subMessage = "Semoga langkah hari ini selalu dimudahkan";
     } else if (hours >= 15 && hours < 18) {
       greeting = "Selamat Sore";
-      subMessage = "Semoga lelah hari ini menjadi berkah";
+      subMessage = "Semoga lelah hari ini menjadi Lillah";
     }
 
     document.getElementById('greeting-text').innerText = greeting;
