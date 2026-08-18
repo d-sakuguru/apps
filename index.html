@@ -145,17 +145,35 @@
     document.getElementById('greeting-text').innerText = greeting;
     document.getElementById('subtitle-text').innerText = subMessage;
 
-    // --- INISIALISASI APLIKASI ---
+    // --- INISIALISASI APLIKASI DENGAN OTOMATIS FALLBACK ---
     const primaryUrl = "https://script.google.com/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
     const workspaceUrl = "https://script.google.com/a/~/macros/s/AKfycbyP1STVvtdQTOMFrBBhvkZbFzoDLmopwylc3ysKE7Cqrf2QL22kKldCjqUIgOh8zNya0g/exec";
 
     const iframe = document.getElementById('app');
     const loader = document.getElementById('loader');
 
-    const useAlternative = localStorage.getItem('d_saku_use_alt');
-    iframe.src = useAlternative === 'true' ? workspaceUrl : primaryUrl;
+    // Cek apakah sebelumnya sudah pernah gagal dan dialihkan ke workspace
+    const useAlternative = localStorage.getItem('d_saku_use_alt') === 'true';
+    let currentUrl = useAlternative ? workspaceUrl : primaryUrl;
+    
+    iframe.src = currentUrl;
 
-    // Timer loader pembuka
+    // Jika menggunakan link utama, kita pasang pengaman (fallback otomatis jika gagal/error)
+    if (!useAlternative) {
+      var fallbackTimer = setTimeout(() => {
+        // Jika dalam waktu 6 detik iframe belum merespons/gagal, pindah ke workspaceUrl
+        console.log("Link utama lambat/gagal, beralih otomatis ke workspace...");
+        localStorage.setItem('d_saku_use_alt', 'true');
+        iframe.src = workspaceUrl;
+      }, 6000); // Waktu tunggu 6 detik
+
+      // Jika iframe berhasil memuat, batalkan timer fallback
+      iframe.onload = function() {
+        clearTimeout(fallbackTimer);
+      };
+    }
+
+    // Timer loader pembuka splash screen
     window.addEventListener('load', () => {
       setTimeout(() => {
         loader.style.opacity = '0';
